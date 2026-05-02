@@ -26,16 +26,12 @@ export default function VerifyEmail({ email, initialDevOtp, initialSignupEmailSe
   const [resendCooldown, setResendCooldown] = useState(0);
   const [resendLoading, setResendLoading] = useState(false);
   const [resendSuccess, setResendSuccess] = useState<string | null>(null);
-  const [devOtpShown, setDevOtpShown] = useState<string | null>(() => initialDevOtp ?? fromRegister ?? null);
+  const [devOtpShown, setDevOtpShown] = useState<string | null>(null);
   const inputs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
     inputs.current[0]?.focus();
   }, []);
-
-  useEffect(() => {
-    if (initialDevOtp) setDevOtpShown(initialDevOtp);
-  }, [initialDevOtp]);
 
   useEffect(() => {
     if (resendCooldown > 0) {
@@ -107,9 +103,7 @@ export default function VerifyEmail({ email, initialDevOtp, initialSignupEmailSe
           { duration: 8000 },
         );
         setResendSuccess(
-          data.dev_otp
-            ? 'email_sent is true (provider accepted the message). If you still see nothing, check Spam; the code is also shown below in dev mode.'
-            : 'A new code was sent. If you do not see it in a minute, open Spam (Gmail often filters verification mail), Promotions, then All Mail.',
+          'A new code was sent. If you do not see it in a minute, open Spam (Gmail often filters verification mail), Promotions, then All Mail.',
         );
       } else if (data.dev_otp) {
         toast.error(
@@ -192,14 +186,7 @@ export default function VerifyEmail({ email, initialDevOtp, initialSignupEmailSe
           </div>
         )}
 
-        {devOtpShown && (
-          <div className="mb-4 rounded-2xl border border-amber-400/40 bg-amber-500/15 px-4 py-3 text-center">
-            <p className="text-amber-100/90 text-xs font-semibold uppercase tracking-wide mb-2">
-              Dev fallback (set DEV_EXPOSE_OTP_IN_RESPONSE=true - never in production)
-            </p>
-            <p className="text-3xl font-bold tracking-[0.35em] text-white font-mono">{devOtpShown}</p>
-          </div>
-        )}
+
 
         <div className="glass rounded-3xl p-8 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
