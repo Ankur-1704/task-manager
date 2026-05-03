@@ -1,8 +1,8 @@
 [build]
 builder = "nixpacks"
-buildCommand = "cd frontend && npm install && npm run build && cd .. && python -m pip install -r requirements.txt && python -m alembic upgrade head"
+buildCommand = "cd frontend && npm install && npm run build && cd .. && python3 -m pip install -r requirements.txt && python3 -m alembic upgrade head"
 
 [deploy]
-startCommand = "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+startCommand = "python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"
 healthcheckPath = "/health"
 restartPolicyType = "on_failure"
