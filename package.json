@@ -1,0 +1,10 @@
+{
+  "name": "team-task-manager",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Root meta-package so Nixpacks installs Node alongside Python (frontend lives in frontend/)",
+  "scripts": {},
+  "engines": {
+    "node": ">=20"
+  }
+}

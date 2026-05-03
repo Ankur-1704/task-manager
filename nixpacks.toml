@@ -1,0 +1,6 @@
+# Python is auto-detected from requirements.txt; without Node, `npm` is missing and
+# the Railway buildCommand cannot build frontend/. Extend providers with Node.
+providers = ["...", "node"]
+
+[variables]
+NIXPACKS_NODE_VERSION = "20"
