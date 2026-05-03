@@ -180,9 +180,9 @@ export default function VerifyEmail({ email, initialDevOtp, initialSignupEmailSe
         </div>
 
         {initialSignupEmailSent === false && (
-          <div className="mb-4 rounded-2xl border border-orange-400/40 bg-orange-500/15 px-4 py-3 text-sm text-orange-100">
-            Signup reports the server did not successfully hand mail to SMTP (<code className="text-xs">email_sent:</code>{' '}
-            false). Check <code className="text-xs">MAIL_*</code> in the API .env, restart uvicorn, then tap Resend code.
+          <div className="mb-4 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950 leading-relaxed">
+            Signup reports the server did not successfully hand mail to SMTP (<code className="rounded bg-amber-100/80 px-1 py-0.5 text-xs text-amber-900">email_sent:</code>{' '}
+            false). Check <code className="rounded bg-amber-100/80 px-1 py-0.5 text-xs text-amber-900">MAIL_*</code> in the API .env, restart uvicorn, then tap Resend code.
           </div>
         )}
 
@@ -191,12 +191,12 @@ export default function VerifyEmail({ email, initialDevOtp, initialSignupEmailSe
         <div className="glass rounded-3xl p-8 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
             {resendSuccess && (
-              <div className="bg-emerald-500/10 border border-emerald-400/30 text-emerald-100 text-sm rounded-2xl px-4 py-3">
+              <div className="bg-emerald-50 border border-emerald-200 text-emerald-950 text-sm rounded-2xl px-4 py-3 leading-relaxed">
                 {resendSuccess}
               </div>
             )}
             {error && (
-              <div className="bg-red-500/10 border border-red-400/30 text-red-300 text-sm rounded-2xl px-4 py-3">
+              <div className="bg-red-50 border border-red-200 text-red-900 text-sm rounded-2xl px-4 py-3 leading-relaxed">
                 {error}
               </div>
             )}

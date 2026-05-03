@@ -29,10 +29,40 @@ export default function App() {
           <Toaster
             position="top-right"
             toastOptions={{
+              duration: 4000,
               style: {
                 borderRadius: '12px',
                 fontSize: '14px',
                 fontWeight: '500',
+                background: '#ffffff',
+                color: '#0f172a',
+                border: '1px solid #e2e8f0',
+                boxShadow: '0 12px 40px -12px rgba(15, 23, 42, 0.28)',
+              },
+              success: {
+                style: {
+                  background: '#ecfdf5',
+                  color: '#065f46',
+                  border: '1px solid #6ee7b7',
+                  boxShadow: '0 12px 40px -12px rgba(6, 95, 70, 0.2)',
+                },
+                iconTheme: { primary: '#059669', secondary: '#ecfdf5' },
+              },
+              error: {
+                style: {
+                  background: '#fef2f2',
+                  color: '#991b1b',
+                  border: '1px solid #fca5a5',
+                  boxShadow: '0 12px 40px -12px rgba(153, 27, 27, 0.2)',
+                },
+                iconTheme: { primary: '#ffffff', secondary: '#dc2626' },
+              },
+              loading: {
+                style: {
+                  background: '#f8fafc',
+                  color: '#1e293b',
+                  border: '1px solid #cbd5e1',
+                },
               },
             }}
           />

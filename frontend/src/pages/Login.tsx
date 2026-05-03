@@ -62,7 +62,7 @@ export default function Login() {
         <div className="glass rounded-3xl p-8 shadow-2xl animate-fade-in-up delay-100">
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="bg-red-500/10 border border-red-400/30 text-red-300 text-sm rounded-2xl px-4 py-3 animate-fade-in">
+              <div className="bg-red-50 border border-red-200 text-red-900 text-sm rounded-2xl px-4 py-3 animate-fade-in leading-relaxed">
                 {error}
               </div>
             )}

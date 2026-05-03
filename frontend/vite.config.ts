@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // Dev + preview forward /api → FastAPI. `vite preview` does NOT inherit `server.proxy` unless duplicated here.
 const apiProxy = {
   '/api': {
-    target: process.env.VITE_API_PROXY ?? 'http://127.0.0.1:8001',
+    target: process.env.VITE_API_PROXY ?? 'http://127.0.0.1:8000',
     changeOrigin: true,
   },
 } satisfies Record<string, import('vite').ProxyOptions>
