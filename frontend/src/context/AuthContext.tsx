@@ -1,11 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '../types';
-import {
-  getMe,
-  login as apiLogin,
-  signup as apiSignup,
-  verifyEmail as apiVerifyEmail,
-} from '../api/auth';
+import { getMe, login as apiLogin, signup as apiSignup } from '../api/auth';
 
 function subjectFromJwt(token: string): string {
   try {
@@ -29,13 +24,7 @@ interface AuthContextValue {
     email: string,
     password: string,
     invitationToken?: string,
-  ) => Promise<{
-    is_verified: boolean;
-    email: string;
-    dev_otp?: string | null;
-    email_sent?: boolean | null;
-  }>;
-  verifyEmail: (email: string, otp: string) => Promise<void>;
+  ) => Promise<void>;
   logout: () => void;
 }
 
@@ -87,22 +76,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         id: id || `temp:${normalized}`,
         name: name.trim(),
         email: normalized,
-        is_verified: false,
+        is_verified: res.is_verified,
         created_at: new Date().toISOString(),
       });
     }
-    return {
-      is_verified: res.is_verified,
-      email: normalized,
-      dev_otp: res.dev_otp,
-      email_sent: res.email_sent,
-    };
-  };
-
-  const verifyEmail = async (email: string, otp: string) => {
-    const res = await apiVerifyEmail({ email, otp_code: otp });
-    localStorage.setItem('token', res.access_token);
-    setUser(res.user);
   };
 
   const logout = () => {
@@ -111,7 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, register, verifyEmail, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -14,9 +14,7 @@ export interface TokenResponse {
   access_token: string;
   token_type: string;
   is_verified: boolean;
-  /** Only when API `DEV_EXPOSE_OTP_IN_RESPONSE` — never in production */
   dev_otp?: string | null;
-  /** Signup: true if SMTP accepted the message (inbox not guaranteed) */
   email_sent?: boolean | null;
 }
 

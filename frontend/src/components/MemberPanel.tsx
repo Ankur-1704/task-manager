@@ -24,7 +24,24 @@ export default function MemberPanel({ projectId, members, ownerId, isAdmin, curr
 
   const addMutation = useMutation({
     mutationFn: () => addMember(projectId, { email: email.trim(), role }),
-    onSuccess: () => { toast.success('Member added'); setEmail(''); setRole('MEMBER'); setShowAddForm(false); invalidate(); },
+    onSuccess: (data) => {
+      if (data.type === 'invited' && data.signup_link) {
+        toast.success(data.message, { duration: 5000 });
+        void navigator.clipboard.writeText(data.signup_link).then(
+          () => toast.success('Signup link copied to clipboard'),
+          () =>
+            toast(`Copy this link: ${data.signup_link}`, {
+              duration: 12000,
+            }),
+        );
+      } else {
+        toast.success('Member added');
+      }
+      setEmail('');
+      setRole('MEMBER');
+      setShowAddForm(false);
+      invalidate();
+    },
     onError: (err: any) => toast.error(err.response?.data?.detail ?? 'Failed to add member'),
   });
 

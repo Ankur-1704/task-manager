@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_verified_user, get_db
+from app.api.deps import get_current_user, get_db
 from app.models.invitation import Invitation
 from app.models.member import Member
 from app.models.project import Project
@@ -42,7 +42,7 @@ def get_invitation(token: str, db: Session = Depends(get_db)):
 @router.post("/{token}/accept", status_code=status.HTTP_200_OK)
 def accept_invitation(
     token: str,
-    current_user: User = Depends(get_current_verified_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     invitation = (

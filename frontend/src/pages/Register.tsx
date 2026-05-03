@@ -23,31 +23,9 @@ export default function Register() {
     if (password.length < 6) return setError('Password must be at least 6 characters');
     setIsLoading(true);
     try {
-      const result = await register(name.trim(), email, password, invitationToken);
-      const normalized = email.trim().toLowerCase();
-      if (typeof result.email_sent !== 'boolean') {
-        toast(
-          'Account created, but email_sent was missing from the API response (some proxies strip JSON fields). Open Network → signup → Response: if email_sent is true, check Spam; if false, fix MAIL_* on the server. Or set VITE_API_BASE_URL=http://127.0.0.1:8001/api in frontend/.env.',
-          { duration: 16000 },
-        );
-      } else if (result.email_sent === false) {
-        toast.error(
-          'The API could not hand off mail to SMTP (signup). Fix MAIL_* on the server, restart it, then use Resend code.',
-          { duration: 9000 },
-        );
-      } else if (result.email_sent === true) {
-        toast.success(`Mail accepted for delivery to ${normalized}. Watch inbox and Spam.`, {
-          duration: 7000,
-        });
-      }
-      navigate('/verify-email', {
-        replace: true,
-        state: {
-          email: normalized,
-          ...(typeof result.email_sent === 'boolean' ? { emailSent: result.email_sent } : {}),
-          ...(result.dev_otp ? { devOtp: result.dev_otp } : {}),
-        },
-      });
+      await register(name.trim(), email, password, invitationToken);
+      toast.success('Account created. Welcome!');
+      navigate('/dashboard', { replace: true });
     } catch (err: any) {
       setError(
         formatApiErrorDetail(err.response?.data?.detail, 'Registration failed. Please try again.'),

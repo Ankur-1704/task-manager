@@ -6,8 +6,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import ResumeVerification from './pages/ResumeVerification';
-import VerifyEmailGate from './pages/VerifyEmailGate';
 import Dashboard from './pages/Dashboard';
 import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
@@ -68,10 +66,10 @@ export default function App() {
           />
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/verify-email" element={<VerifyEmailGate />} />
-            <Route path="/resume-verification" element={<ResumeVerification />} />
             <Route path="/register" element={<Register />} />
             <Route path="/signup" element={<Register />} />
+            <Route path="/verify-email" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/resume-verification" element={<Navigate to="/login" replace />} />
             <Route element={<ProtectedRoute />}>
               <Route element={<Layout />}>
                 <Route path="/" element={<Navigate to="/dashboard" replace />} />

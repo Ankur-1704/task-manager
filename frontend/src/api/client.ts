@@ -2,7 +2,7 @@ import type { AxiosResponse } from 'axios';
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
 /** Do not attach JWT — backend treats these as public; old tokens caused confusing sessions during signup/resend. */
-const PUBLIC_AUTH_PATHS = ['/auth/signup', '/auth/login', '/auth/resend-otp', '/auth/verify-email'] as const;
+const PUBLIC_AUTH_PATHS = ['/auth/signup', '/auth/login'] as const;
 
 function isPublicAuthPath(url: string | undefined): boolean {
   if (!url) return false;

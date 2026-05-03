@@ -43,20 +43,9 @@ def get_current_user(
     return user
 
 
-def get_current_verified_user(
-    current_user: User = Depends(get_current_user),
-) -> User:
-    if not current_user.is_verified:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Email not verified. Complete verification before using the app.",
-        )
-    return current_user
-
-
 def get_project_member(
     project_id: str,
-    current_user: User = Depends(get_current_verified_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> Member:
     member = (

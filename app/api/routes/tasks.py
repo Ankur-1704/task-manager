@@ -3,7 +3,7 @@ from datetime import date
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_verified_user, get_db, get_project_member, require_admin
+from app.api.deps import get_current_user, get_db, get_project_member, require_admin
 from app.models.member import Member
 from app.models.task import Task
 from app.models.user import User
@@ -45,7 +45,7 @@ def list_tasks(
 def create_task(
     project_id: str,
     payload: TaskCreate,
-    current_user: User = Depends(get_current_verified_user),
+    current_user: User = Depends(get_current_user),
     member: Member = Depends(get_project_member),
     db: Session = Depends(get_db),
 ):
@@ -95,7 +95,7 @@ def update_task(
     project_id: str,
     task_id: str,
     payload: TaskUpdate,
-    current_user: User = Depends(get_current_verified_user),
+    current_user: User = Depends(get_current_user),
     member: Member = Depends(get_project_member),
     db: Session = Depends(get_db),
 ):
@@ -138,7 +138,7 @@ def update_task_status(
     project_id: str,
     task_id: str,
     payload: TaskStatusUpdate,
-    current_user: User = Depends(get_current_verified_user),
+    current_user: User = Depends(get_current_user),
     member: Member = Depends(get_project_member),
     db: Session = Depends(get_db),
 ):

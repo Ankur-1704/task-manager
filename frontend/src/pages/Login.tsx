@@ -23,9 +23,7 @@ export default function Login() {
       setError(
         formatApiErrorDetail(
           err.response?.data?.detail,
-          err.response?.status === 403
-            ? 'Please verify your email before signing in.'
-            : 'Invalid email or password',
+          'Invalid email or password',
         ),
       );
     } finally {
@@ -113,16 +111,6 @@ export default function Login() {
               )}
             </button>
           </form>
-
-          <p className="text-center text-sm text-gray-500 mt-4">
-            Need to verify your email?{' '}
-            <Link
-              to={email ? `/resume-verification?email=${encodeURIComponent(email)}` : '/resume-verification'}
-              className="font-semibold text-indigo-600 hover:text-indigo-700"
-            >
-              Send a code
-            </Link>
-          </p>
 
           <p className="text-center text-sm text-gray-500 mt-6">
             Don't have an account?{' '}

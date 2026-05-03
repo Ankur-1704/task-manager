@@ -1,6 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import VerifyEmail from '../pages/VerifyEmail';
 
 export default function ProtectedRoute() {
   const { user, isLoading } = useAuth();
@@ -17,6 +16,5 @@ export default function ProtectedRoute() {
   }
 
   if (!user) return <Navigate to="/login" replace />;
-  if (!user.is_verified) return <VerifyEmail email={user.email} />;
   return <Outlet />;
 }

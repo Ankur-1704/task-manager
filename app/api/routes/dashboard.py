@@ -3,7 +3,7 @@ from datetime import date
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_verified_user, get_db
+from app.api.deps import get_current_user, get_db
 from app.models.member import Member
 from app.models.task import Task
 from app.schemas.dashboard import DashboardResponse, TaskCounts
@@ -14,7 +14,7 @@ router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
 @router.get("/", response_model=DashboardResponse)
 def get_dashboard(
-    current_user: User = Depends(get_current_verified_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     memberships = db.query(Member).filter(Member.user_id == current_user.id).all()

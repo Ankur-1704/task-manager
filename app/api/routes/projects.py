@@ -1,12 +1,11 @@
 import uuid
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_verified_user, get_db, get_project_member, require_admin
+from app.api.deps import get_current_user, get_db, get_project_member, require_admin
 from app.core.config import settings
-from app.core.email import send_invitation_email
 from app.models.invitation import Invitation
 from app.models.member import Member
 from app.models.project import Project
@@ -25,7 +24,7 @@ router = APIRouter(prefix="/projects", tags=["Projects"])
 
 @router.get("/", response_model=list[ProjectResponse])
 def list_projects(
-    current_user: User = Depends(get_current_verified_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     memberships = db.query(Member).filter(Member.user_id == current_user.id).all()
@@ -37,7 +36,7 @@ def list_projects(
 @router.post("/", response_model=ProjectResponse, status_code=status.HTTP_201_CREATED)
 def create_project(
     payload: ProjectCreate,
-    current_user: User = Depends(get_current_verified_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     project = Project(
@@ -120,9 +119,8 @@ def list_members(
 def add_member(
     project_id: str,
     payload: AddMemberRequest,
-    background_tasks: BackgroundTasks,
     admin: Member = Depends(require_admin),
-    current_user: User = Depends(get_current_verified_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     project = db.query(Project).filter(Project.id == project_id).first()
@@ -147,16 +145,6 @@ def add_member(
         db.commit()
         db.refresh(new_member)
 
-        invitation_link = f"{settings.FRONTEND_URL}/projects/{project_id}"
-        background_tasks.add_task(
-            send_invitation_email,
-            user.email,
-            project.name,
-            current_user.name,
-            payload.role,
-            invitation_link,
-            True,
-        )
         return {"message": f"User added to project as {payload.role}", "type": "added"}
 
     # User doesn't exist — create invitation and send signup link
@@ -189,18 +177,13 @@ def add_member(
     db.commit()
 
     invitation_link = f"{settings.FRONTEND_URL}/signup?invitation_token={token}"
-    background_tasks.add_task(
-        send_invitation_email,
-        payload.email,
-        project.name,
-        current_user.name,
-        payload.role,
-        invitation_link,
-        False,
-    )
     return {
-        "message": f"Invitation sent to {payload.email}. They will receive an email to create an account.",
+        "message": (
+            f"Invitation created for {payload.email}. Share the signup link with them "
+            "(email is not sent from the server)."
+        ),
         "type": "invited",
+        "signup_link": invitation_link,
     }
 
 

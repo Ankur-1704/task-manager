@@ -19,8 +19,12 @@ export const deleteProject = (id: string) =>
 export const getMembers = (projectId: string) =>
   client.get<Member[]>(`/projects/${projectId}/members`).then((r) => r.data);
 
+export type AddMemberResult =
+  | { message: string; type: 'added' }
+  | { message: string; type: 'invited'; signup_link: string };
+
 export const addMember = (projectId: string, data: { email: string; role: Role }) =>
-  client.post<Member>(`/projects/${projectId}/members`, data).then((r) => r.data);
+  client.post<AddMemberResult>(`/projects/${projectId}/members`, data).then((r) => r.data);
 
 export const removeMember = (projectId: string, userId: string) =>
   client.delete(`/projects/${projectId}/members/${userId}`).then((r) => r.data);
